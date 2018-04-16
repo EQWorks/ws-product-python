@@ -18,7 +18,7 @@ You can [![Remix on Glitch](https://cdn.glitch.com/2703baf2-b643-4da7-ab91-7ee2a
 
 This is the most recommended way since it's one of the easiest to setup (requiring zero local effort), as well the easiest to share.
 
-### Local Python
+### Local Python (3.6+)
 
 0. Clone this repository
 1. Install Python level dependencies `$ pip install -r requirements.txt` (use of [`virtualenv`](https://virtualenv.pypa.io/en/stable/) is recommended)
