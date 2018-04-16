@@ -1,0 +1,6 @@
+pip-tools
+flask
+sqlalchemy
+psycopg2
+simplejson
+gunicorn
