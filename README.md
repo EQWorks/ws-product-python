@@ -20,9 +20,11 @@ This is the most recommended way since it's one of the easiest to setup (requiri
 
 ### Local Python (3.6+)
 
+Assume [`Pipenv`](https://github.com/pypa/pipenv) is installed
+
 0. Clone this repository
-1. Install Python level dependencies `$ pip install -r requirements.txt` (use of [`virtualenv`](https://virtualenv.pypa.io/en/stable/) is recommended)
-2. Run `$ SQL_URI=<SQL connection URI> FLASK_APP=app.py FLASK_DEBUG=1 flask run` and by default it should now be listening on port `5000`
+1. Install Python level dependencies `$ pipenv install`
+2. Run `$ pipenv run SQL_URI=<SQL connection URI> ./start.sh` and by default it should now be listening on port `5000`
 3. Open your browser and point to `localhost:5000` and you should see `Welcome to EQ Works 😎`
 
 ### Local Docker

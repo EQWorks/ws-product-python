@@ -19,9 +19,8 @@ def index():
 @app.route('/events/hourly')
 def events_hourly():
     return queryHelper('''
-        SELECT date, hour, SUM(events) AS events
+        SELECT date, hour, events
         FROM public.hourly_events
-        GROUP BY date, hour
         ORDER BY date, hour
         LIMIT 168;
     ''')
@@ -41,12 +40,8 @@ def events_daily():
 @app.route('/stats/hourly')
 def stats_hourly():
     return queryHelper('''
-        SELECT date, hour,
-            SUM(impressions) AS impressions,
-            SUM(clicks) AS clicks,
-            SUM(revenue) AS revenue
+        SELECT date, hour, impressions, clicks, revenue
         FROM public.hourly_stats
-        GROUP BY date, hour
         ORDER BY date, hour
         LIMIT 168;
     ''')
@@ -65,6 +60,12 @@ def stats_daily():
         LIMIT 7;
     ''')
 
+@app.route('/poi')
+def poi():
+    return queryHelper('''
+        SELECT *
+        FROM public.poi;
+    ''')
 
 def queryHelper(query):
     with engine.connect() as conn:
