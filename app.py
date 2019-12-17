@@ -4,11 +4,16 @@ import os
 from flask import Flask, jsonify
 import sqlalchemy
 
+from rate_limiter import RateLimiter
+
 # web app
 app = Flask(__name__)
 
 # database engine
 engine = sqlalchemy.create_engine(os.getenv('SQL_URI'))
+
+# rate limiter
+limiter = RateLimiter()
 
 
 @app.route('/')
@@ -68,6 +73,13 @@ def poi():
     ''')
 
 def queryHelper(query):
-    with engine.connect() as conn:
-        result = conn.execute(query).fetchall()
-        return jsonify([dict(row.items()) for row in result])
+    # Return the data if total calls to database-related methods are within
+    # rate limit parameters
+    if limiter.attempt_access():
+        with engine.connect() as conn:
+            result = conn.execute(query).fetchall()
+            return jsonify([dict(row.items()) for row in result])
+
+    # TODO: Include message or some sort of request code that returns with None
+    else:
+        return dict()
