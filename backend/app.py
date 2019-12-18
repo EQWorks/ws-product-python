@@ -4,7 +4,8 @@ import os
 from flask import Flask, jsonify
 import sqlalchemy
 
-from rate_limiter import RateLimiter
+from .rate_limiter import RateLimiter
+
 
 # web app
 app = Flask(__name__)
