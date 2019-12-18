@@ -4,14 +4,18 @@ import os
 from flask import Flask, jsonify, render_template
 import sqlalchemy
 
-from .rate_limiter import RateLimiter
+from rate_limiter import RateLimiter
 
 
 # web app
 app = Flask(__name__)
 
+print(os.getenv('SQL_URI'))
+print(os.getenv('PYTHONUNBUFFERED'))
+
 # database engine
-engine = sqlalchemy.create_engine(os.getenv('SQL_URI'))
+# TODO: Fix the environment variable for the final version
+engine = sqlalchemy.create_engine("postgresql://readonly:w2UIO@#bg532!@work-samples-db.cx4wctygygyq.us-east-1.rds.amazonaws.com:5432/work_samples"""""os.getenv('SQL_URI')""")
 
 # rate limiter
 limiter = RateLimiter()
@@ -89,4 +93,6 @@ def queryHelper(query):
 @app.route('/test')
 def test():
     return render_template("index.html", token = "Hellow World")
+
+app.run(debug=True)
 
