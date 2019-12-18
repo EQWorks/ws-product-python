@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template
 import sqlalchemy
 
 from .rate_limiter import RateLimiter
@@ -84,3 +84,9 @@ def queryHelper(query):
     # TODO: Include message or some sort of request code that returns with None
     else:
         return dict()
+
+
+@app.route('/test')
+def test():
+    return render_template("index.html", token = "Hellow World")
+
