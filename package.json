@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "fuse.js": "^3.4.3",
+    "semantic-ui-react": "^0.88.2"
+  }
+}

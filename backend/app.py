@@ -3,6 +3,9 @@
 import os
 from flask import Flask, jsonify, render_template
 import sqlalchemy
+import json
+import datetime
+import ast
 
 from rate_limiter import RateLimiter
 
@@ -14,8 +17,9 @@ print(os.getenv('SQL_URI'))
 print(os.getenv('PYTHONUNBUFFERED'))
 
 # database engine
-# TODO: Fix the environment variable for the final version
-engine = sqlalchemy.create_engine("postgresql://readonly:w2UIO@#bg532!@work-samples-db.cx4wctygygyq.us-east-1.rds.amazonaws.com:5432/work_samples"""""os.getenv('SQL_URI')""")
+# TODO: Fix the environment variable for the final version by replacing the parameter below with:
+# os.getenv('SQL_URI')
+engine = sqlalchemy.create_engine("postgresql://readonly:w2UIO@#bg532!@work-samples-db.cx4wctygygyq.us-east-1.rds.amazonaws.com:5432/work_samples")
 
 # rate limiter
 limiter = RateLimiter()
@@ -89,10 +93,65 @@ def queryHelper(query):
     else:
         return dict()
 
+@app.route('/visuals')
+def renderVisuals():
+    date_handler = lambda obj: (
+        obj.isoformat()
+        if isinstance(obj, (datetime.datetime, datetime.date))
+        else None
+    )
 
-@app.route('/test')
-def test():
-    return render_template("index.html", token = "Hellow World")
+    with engine.connect() as conn:
+        eventsHourly =  json.dumps([dict(row.items()) for row in (conn.execute('''
+                            SELECT date, hour, events
+                            FROM public.hourly_events
+                            ORDER BY date, hour
+                            LIMIT 168;
+                        ''').fetchall())], default=date_handler)
+
+        eventsDaily =   json.dumps([dict(row.items()) for row in (conn.execute('''
+                            SELECT date, SUM(events) AS events
+                            FROM public.hourly_events
+                            GROUP BY date
+                            ORDER BY date
+                            LIMIT 7;
+                        ''').fetchall())], default=date_handler)
+
+        statsHourly =   json.dumps([dict(row.items()) for row in (conn.execute('''
+                            SELECT date, hour, impressions, clicks, revenue
+                            FROM public.hourly_stats
+                            ORDER BY date, hour
+                            LIMIT 168;
+                        ''').fetchall())], default=date_handler)
+
+        statsDaily =    json.dumps([dict(row.items()) for row in (conn.execute('''
+                            SELECT date,
+                                SUM(impressions) AS impressions,
+                                SUM(clicks) AS clicks,
+                                SUM(revenue) AS revenue
+                            FROM public.hourly_stats
+                            GROUP BY date
+                            ORDER BY date
+                            LIMIT 7;
+                        ''').fetchall())], default=date_handler)
+
+        poiInfo =       json.dumps([dict(row.items()) for row in (conn.execute('''
+                            SELECT *
+                            FROM public.poi;
+                        ''').fetchall())], default=date_handler)
+        
+        print("Rendering Template")
+
+        print(eventsHourly)
+
+        return render_template( "index.html",
+                                token = "Hello World",
+                                eventsHourly = eventsHourly,
+                                eventsDaily = eventsDaily,
+                                statsHourly = statsHourly,
+                                statsDaily = statsDaily,
+                                poiInfo = poiInfo)
+
 
 app.run(debug=True)
 
