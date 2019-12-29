@@ -4,3 +4,13 @@
     height: 200px;
     width: 400px; 
   }
+
+.Data-row-unselected {
+    margin: 2px;
+    background-color: #000000;
+}
+
+.Data-row-selected {
+    margin: 2px;
+    background-color: gold;
+}

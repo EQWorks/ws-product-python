@@ -4,7 +4,7 @@ import './Tables.css';
 import SearchForm from './SearchForm';
 import * as Fuse from 'fuse.js';
 
-class EventsHourlyTable extends Component{
+class TableTemplate extends Component{
 
   constructor(props){
     super(props);
@@ -84,5 +84,4 @@ class EventsHourlyTable extends Component{
   }
 }
 
-export default EventsHourlyTable;
-
+export default TableTemplate;

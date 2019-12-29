@@ -101,3 +101,6 @@ ENV/
 # .idea
 .idea/workspace.xml
 .idea/tasks.xml
+
+
+node_modules/
