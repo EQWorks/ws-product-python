@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Map, InfoWindow, Marker, GoogleApiWrapper, Circle } from 'google-maps-react';
+import GoogleMapReact from 'google-map-react';
 import './VisualMap.css';
 import DateForm from './DateForm';
 import RadioForm from './RadioForm';

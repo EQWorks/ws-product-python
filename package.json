@@ -1,8 +1,0 @@
-{
-  "dependencies": {
-    "fuse.js": "^3.4.3",
-    "google-map-react": "^1.1.5",
-    "google-maps-react": "^2.0.2",
-    "semantic-ui-react": "^0.88.2"
-  }
-}

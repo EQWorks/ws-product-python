@@ -14,13 +14,11 @@ from rate_limiter import RateLimiter
 # web app
 app = Flask(__name__)
 
-print(os.getenv('SQL_URI'))
-print(os.getenv('PYTHONUNBUFFERED'))
 
 # database engine
 # TODO: Fix the environment variable for the final version by replacing the parameter below with:
 # os.getenv('SQL_URI')
-engine = sqlalchemy.create_engine("postgresql://readonly:w2UIO@#bg532!@work-samples-db.cx4wctygygyq.us-east-1.rds.amazonaws.com:5432/work_samples")
+engine = sqlalchemy.create_engine(os.getenv('SQL_URI'))
 
 # rate limiter
 limiter = RateLimiter()
@@ -28,7 +26,21 @@ limiter = RateLimiter()
 
 @app.route('/')
 def index():
-    return 'Welcome to EQ Works 😎'
+    text = 'Welcome to EQ Works 😎<br/><br/>'
+    
+    text += 'Endpoints<br/>'
+    text += '/: You\'re already here 😁😁😁<br/>'
+    text += '/events/hourly: Events sorted by hour (Rate limited)<br/>'
+    text += '/events/daily: Events sorted by day (Rate limited)<br/>'
+    text += '/stats/hourly: Stats sorted by hour (Rate limited)<br/>'
+    text += '/stats/daily: Stats sorted by day (Rate limited)<br/>'
+    text += '/database: Query the database to look at tables and columns (Rate limited)<br/>'
+    text += '/visuals: UI interface for the data<br/><br/>'
+    
+    text += 'Github link <a href="https://github.com/EstaticShark/ws-product-python">here</a><br/>'
+    text += 'Short response provided via README.md in the above link'
+    
+    return text
 
 
 @app.route('/events/hourly')
@@ -82,22 +94,20 @@ def poi():
         FROM public.poi;
     ''')
 
-
+#Test api for querying database
 @app.route('/database')
 def return_database():
-    inspector = sqlalchemy.inspect(engine)
-    for table_name in inspector.get_table_names():
-        for column in inspector.get_columns(table_name):
-            print("Column: %s" % column['name'])
-
-    m = sqlalchemy.MetaData()
-    m.reflect(engine)
-    for table in m.tables.values():
-        print("Table: " + table.name)
-        for column in table.c:
-            print("Table Column: " + column.name)
-
-    return jsonify(dict())
+    if limiter.attempt_access():
+      data_labels = {}
+      m = sqlalchemy.MetaData()
+      m.reflect(engine)
+      for table in m.tables.values():
+          data_labels[table.name] = []
+          for column in table.c:
+            data_labels[table.name].append(column.name)
+      return jsonify(data_labels)
+    else:
+      return jsonify(dict())
 
 
 def queryHelper(query):
@@ -170,7 +180,8 @@ def render_visuals():
                                 statsHourly = statsHourly,
                                 statsDaily = statsDaily,
                                 poiInfo = poiInfo)
+        return jsonify(dict())
     
-
-app.run(debug=True)
+if __name__ == '__main__':
+  app.run(debug=True)
 
