@@ -119,6 +119,6 @@ function setCenter(map) {
 
 //TODO: Remove API Key and move to env variables after migration
 export default GoogleApiWrapper({
-  apiKey: ('AIzaSyDKDPeHWUgW0LcMY6QHOovjUS6YAP98yGc')
+  apiKey: ('apikeyhere')
 })(VisualMap)
 
