@@ -1,0 +1,46 @@
+.Data-map {
+    overflow:hidden;
+    padding-bottom:56.25%;
+    position:relative;
+    height: auto;
+    width: 80%;
+    margin: 10%;
+}
+
+.Data-map Map {
+    left:0;
+    top:0;
+    height:100%;
+    width:100%;
+    position:relative;
+}
+
+.Start-date-form {
+    
+}
+
+.End-date-form {
+    
+}
+
+.Visual-forms {
+    margin-bottom: 2px;
+}
+
+.Info-window {
+    min-width: 5em;
+    color: black;
+    font-family: sans-serif, Helvetica;
+}
+
+.Info-window-header {
+    color: green;
+    font-family: sans-serif, Helvetica;
+}
+
+.Form-label {
+    display: inline-block;
+    text-align: right;
+    width: 150px;
+    margin: 5px;
+}

@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import EventsHourlyTable from './EventsHourlyTable'
+import EventsHourlyTable from './Tables/EventsHourlyTable'
+import EventsDailyTable from './Tables/EventsDailyTable'
+import StatsHourlyTable from './Tables/StatsHourlyTable'
+import StatsDailyTable from './Tables/StatsDailyTable'
+import VisualMap from './Maps/VisualMap'
 
 class App extends Component{
   constructor(props){
@@ -28,10 +32,32 @@ class App extends Component{
       <div className="App">
         <header className="App-header">
           <h1>EQWorks Product Development Application: UI Interface</h1>
-          <div className="Visuals">
-            <EventsHourlyTable tableData={this.state.eventsHourly}/>
-          </div>
         </header>
+        <div className="App-body">
+          <div className="App-tables">
+            <div className="Table-div">
+              <EventsHourlyTable tableData={this.state.eventsHourly}/>
+            </div>
+            
+            <div className="Table-div">
+              <EventsDailyTable tableData={this.state.eventsDaily}/>
+            </div>
+          </div>
+          
+          <div className="App-tables" style={{marginBottom: '30%'}}>
+            <div className="Table-div">
+              <StatsHourlyTable tableData={this.state.statsHourly}/>
+            </div>
+
+            <div className="Table-div">
+              <StatsDailyTable tableData={this.state.statsDaily}/>
+            </div>
+          </div>
+
+          <div className="App-map">
+            <VisualMap eventsData={this.state.eventsHourly} statsData={this.state.statsHourly} poiData={this.state.poiInfo}/>
+          </div>
+        </div>
       </div>
     );
   }

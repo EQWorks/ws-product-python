@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Icon, Label, Menu, Table } from 'semantic-ui-react'
 import './Tables.css';
-import SearchForm from './SearchForm';
+import SearchForm from './SearchForm.js';
 import * as Fuse from 'fuse.js';
 
 class TableTemplate extends Component{
@@ -10,15 +10,15 @@ class TableTemplate extends Component{
     super(props);
     this.state = {
         tableData: this.props.tableData,
-        search: '',
-        keys:['date', 'hour', 'events'],
-        searchKey:['date']
+        tableName: this.props.tableName,
+        keys:this.props.keys,
+        searchKeys:this.props.searchKeys,
+        search: ''
     };
   }
 
   onChange = (value) => {
       this.setState({search: value});
-      console.log("EventsHourlyTable's search value: " + value);
   }
 
   isSelected = (date, dateData) => {
@@ -40,9 +40,7 @@ class TableTemplate extends Component{
       distance: 100,
       maxPatternLength: 32,
       minMatchCharLength: 1,
-      keys: [
-        "date"
-      ]
+      keys: this.state.searchKeys
     };
     var fuse = new Fuse(this.state.tableData, options); // "list" is the item array
     return fuse.search(this.state.search);
@@ -52,17 +50,19 @@ class TableTemplate extends Component{
       var dateData = this.fuzzySearch();
       console.log('Date Data: ' + dateData);
     return (
-      <div className="Data-table">
+      <div>
         <SearchForm onChange={this.onChange}/>
         <Table celled>
             <Table.Header>
                 <Table.Row>
-                    EventsHourlyTable
+                    <Table.HeaderCell>Table: {this.state.tableName}</Table.HeaderCell>
                 </Table.Row>
                 <Table.Row>
-                    <Table.HeaderCell>Date</Table.HeaderCell>
-                    <Table.HeaderCell>Hour</Table.HeaderCell>
-                    <Table.HeaderCell>Events</Table.HeaderCell>
+                    {
+                        this.state.keys.map((key) => (
+                            <Table.HeaderCell>{key}</Table.HeaderCell>
+                        ))
+                    }
                 </Table.Row>
             </Table.Header>
 
@@ -70,9 +70,9 @@ class TableTemplate extends Component{
                 {
                     this.state.tableData.map((dataCell, index) => (
                         <Table.Row className={(this.isSelected(dataCell.date, dateData)?"Data-row-selected":"Data-row-unselected")}>
-                            <Table.Cell>{dataCell.date}</Table.Cell>
-                            <Table.Cell>{dataCell.hour}</Table.Cell>
-                            <Table.Cell>{dataCell.events}</Table.Cell>
+                            {this.state.keys.map((key) => (
+                                <Table.Cell>{dataCell[key]}</Table.Cell>
+                            ))}
                         </Table.Row>
                     ))
                 }

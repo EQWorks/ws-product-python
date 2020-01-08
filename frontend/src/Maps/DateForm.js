@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import { Icon, Label, Menu, Table } from 'semantic-ui-react'
-import './Tables.css';
+import './VisualMap.css';
 
-class SearchForm extends Component{
+class DateForm extends Component{
   constructor(props){
     super(props);
 
     this.state = {
-        value:''
+        value:'',
+        boxLabel:this.props.boxText
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -21,20 +21,18 @@ class SearchForm extends Component{
   }
 
   handleSubmit(newValue) {
-      console.log("Searching: " + newValue);
       this.props.onChange(newValue);
   }
 
   render() {
     return (
-      <div>
-            <form>
-                <input type="text" value={this.state.value} onChange={this.handleChange} />
-            </form>
-      </div>
+      <form>
+          <label className='Form-label'>{this.state.boxLabel}</label>
+          <input type="text" placeholder="YYYY-MM-DD" value={this.state.value} onChange={this.handleChange}/>
+      </form>
     );
   }
 }
 
-export default SearchForm;
+export default DateForm;
 

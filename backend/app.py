@@ -6,6 +6,7 @@ import sqlalchemy
 import json
 import datetime
 import ast
+import decimal
 
 from rate_limiter import RateLimiter
 
@@ -81,6 +82,24 @@ def poi():
         FROM public.poi;
     ''')
 
+
+@app.route('/database')
+def return_database():
+    inspector = sqlalchemy.inspect(engine)
+    for table_name in inspector.get_table_names():
+        for column in inspector.get_columns(table_name):
+            print("Column: %s" % column['name'])
+
+    m = sqlalchemy.MetaData()
+    m.reflect(engine)
+    for table in m.tables.values():
+        print("Table: " + table.name)
+        for column in table.c:
+            print("Table Column: " + column.name)
+
+    return jsonify(dict())
+
+
 def queryHelper(query):
     # Return the data if total calls to database-related methods are within
     # rate limit parameters
@@ -93,21 +112,25 @@ def queryHelper(query):
     else:
         return dict()
 
-@app.route('/visuals')
-def renderVisuals():
-    date_handler = lambda obj: (
+def default_handler (obj):
+    if isinstance(obj, decimal.Decimal):
+        return float(obj)
+    else:
         obj.isoformat()
-        if isinstance(obj, (datetime.datetime, datetime.date))
-        else None
-    )
+        if isinstance(obj, (datetime.datetime, datetime.date)):
+            return obj.isoformat()
+        else:
+            return None
 
+@app.route('/visuals')
+def render_visuals():
     with engine.connect() as conn:
         eventsHourly =  json.dumps([dict(row.items()) for row in (conn.execute('''
-                            SELECT date, hour, events
+                            SELECT date, hour, events, poi_id
                             FROM public.hourly_events
                             ORDER BY date, hour
                             LIMIT 168;
-                        ''').fetchall())], default=date_handler)
+                        ''').fetchall())], default=default_handler)
 
         eventsDaily =   json.dumps([dict(row.items()) for row in (conn.execute('''
                             SELECT date, SUM(events) AS events
@@ -115,14 +138,14 @@ def renderVisuals():
                             GROUP BY date
                             ORDER BY date
                             LIMIT 7;
-                        ''').fetchall())], default=date_handler)
+                        ''').fetchall())], default=default_handler)
 
         statsHourly =   json.dumps([dict(row.items()) for row in (conn.execute('''
-                            SELECT date, hour, impressions, clicks, revenue
+                            SELECT date, hour, impressions, clicks, revenue, poi_id
                             FROM public.hourly_stats
                             ORDER BY date, hour
                             LIMIT 168;
-                        ''').fetchall())], default=date_handler)
+                        ''').fetchall())], default=default_handler)
 
         statsDaily =    json.dumps([dict(row.items()) for row in (conn.execute('''
                             SELECT date,
@@ -133,17 +156,13 @@ def renderVisuals():
                             GROUP BY date
                             ORDER BY date
                             LIMIT 7;
-                        ''').fetchall())], default=date_handler)
+                        ''').fetchall())], default=default_handler)
 
         poiInfo =       json.dumps([dict(row.items()) for row in (conn.execute('''
                             SELECT *
                             FROM public.poi;
-                        ''').fetchall())], default=date_handler)
+                        ''').fetchall())], default=default_handler)
         
-        print("Rendering Template")
-
-        print(eventsHourly)
-
         return render_template( "index.html",
                                 token = "Hello World",
                                 eventsHourly = eventsHourly,
@@ -151,7 +170,7 @@ def renderVisuals():
                                 statsHourly = statsHourly,
                                 statsDaily = statsDaily,
                                 poiInfo = poiInfo)
-
+    
 
 app.run(debug=True)
 
