@@ -10,7 +10,7 @@ The following are the recommended options, but you're free to use any means to g
 #### Remote Option: Glitch.com
 
 1. [![Remix on Glitch](https://cdn.glitch.com/2703baf2-b643-4da7-ab91-7ee2a2d00b5b%2Fremix-button.svg)](https://glitch.com/edit/#!/import/github/EQWorks/ws-product-python)
-2. Populate `.env` file with the environment variables given in the problem set we send to you through email
+2. Open `.env` file and paste in the value of `SQL_URI` [environment variable](https://en.wikipedia.org/wiki/Environment_variable) received from the problem set
 3. Click on `Show Live` and you should see `Welcome to EQ Works 😎`
 
 #### Local Option: Python 3.6+
