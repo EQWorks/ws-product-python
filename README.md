@@ -13,20 +13,13 @@ The following are the recommended options, but you're free to use any means to g
 2. Populate `.env` file with the environment variables given in the problem set we send to you through email
 3. Click on `Show Live` and you should see `Welcome to EQ Works 😎`
 
-#### Local Option 1: Python 3.6+
+#### Local Option: Python 3.6+
 
 1. Clone this repository
 2. Install [pipenv](https://pipenv.readthedocs.io/en/latest/), then install Python level dependencies. `$ pipenv install`
 3. Open `.env` file and paste in the value of `SQL_URI` [environment variable](https://en.wikipedia.org/wiki/Environment_variable) received from the problem set
 4. Run `$ pipenv run start`
 5. Open your browser and point to `localhost:5000` and you should see `Welcome to EQ Works 😎`
-
-#### Local Option 2: Docker (`docker-compose` needed)
-
-1. Clone this repository
-2. Create and populate `.env` file with the environment variables given in the problem set we send to you through email
-3. `$ docker-compose up` (or `$ docker-compose up -d` to run as a daemon)
-4. Open your browser and point to `localhost:5000` and you should see `Welcome to EQ Works 😎`
 
 ### Notes on working through the problems
 
