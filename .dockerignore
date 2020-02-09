@@ -1,7 +1,0 @@
-requirements.in
-
-Dockerfile
-.dockerignore
-
-.gitignore
-venv/

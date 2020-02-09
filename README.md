@@ -10,22 +10,16 @@ The following are the recommended options, but you're free to use any means to g
 #### Remote Option: Glitch.com
 
 1. [![Remix on Glitch](https://cdn.glitch.com/2703baf2-b643-4da7-ab91-7ee2a2d00b5b%2Fremix-button.svg)](https://glitch.com/edit/#!/import/github/EQWorks/ws-product-python)
-2. Populate `.env` file with the environment variables given in the problem set we send to you through email
+2. Open `.env` file and paste in the value of `SQL_URI` [environment variable](https://en.wikipedia.org/wiki/Environment_variable) received from the problem set
 3. Click on `Show Live` and you should see `Welcome to EQ Works 😎`
 
-#### Local Option 1: Python 3.6+
+#### Local Option: Python 3.6+
 
 1. Clone this repository
-2. Install Python level dependencies. `$ pipenv install` or `$ pip install -r requirements.txt`
-3. `$ pipenv run SQL_URI=<SQL connection URI> ./start.sh` where `SQL_URI` value should be given in the problem set we send to you through email
-4. Open your browser and point to `localhost:5000` and you should see `Welcome to EQ Works 😎`
-
-#### Local Option 2: Docker (`docker-compose` needed)
-
-1. Clone this repository
-2. Create and populate `.env` file with the environment variables given in the problem set we send to you through email
-3. `$ docker-compose up` (or `$ docker-compose up -d` to run as a daemon)
-4. Open your browser and point to `localhost:5000` and you should see `Welcome to EQ Works 😎`
+2. Install [pipenv](https://pipenv.readthedocs.io/en/latest/), then install Python level dependencies. `$ pipenv install`
+3. Open `.env` file and paste in the value of `SQL_URI` [environment variable](https://en.wikipedia.org/wiki/Environment_variable) received from the problem set
+4. Run `$ pipenv run start`
+5. Open your browser and point to `localhost:5000` and you should see `Welcome to EQ Works 😎`
 
 ### Notes on working through the problems
 
