@@ -17,7 +17,5 @@ gunicorn = "*"
 [dev-packages]
 
 
-
-[requires]
-
-python_version = "3.6"
+[scripts]
+start = 'flask run'
