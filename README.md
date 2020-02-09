@@ -17,7 +17,7 @@ The following are the recommended options, but you're free to use any means to g
 
 1. Clone this repository
 2. Install [pipenv](https://pipenv.readthedocs.io/en/latest/), then install Python level dependencies. `$ pipenv install`
-3. Open `.env` file and paste in the value of `SQL_URI` received from the problem set we sent through email after `=`
+3. Open `.env` file and paste in the value of `SQL_URI` [environment variable](https://en.wikipedia.org/wiki/Environment_variable) received from the problem set
 4. Run `$ pipenv run start`
 5. Open your browser and point to `localhost:5000` and you should see `Welcome to EQ Works 😎`
 
