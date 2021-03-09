@@ -18,7 +18,7 @@ def index():
 
 @app.route('/events/hourly')
 def events_hourly():
-    return queryHelper('''
+    return query_helper('''
         SELECT date, hour, events
         FROM public.hourly_events
         ORDER BY date, hour
@@ -28,7 +28,7 @@ def events_hourly():
 
 @app.route('/events/daily')
 def events_daily():
-    return queryHelper('''
+    return query_helper('''
         SELECT date, SUM(events) AS events
         FROM public.hourly_events
         GROUP BY date
@@ -39,7 +39,7 @@ def events_daily():
 
 @app.route('/stats/hourly')
 def stats_hourly():
-    return queryHelper('''
+    return query_helper('''
         SELECT date, hour, impressions, clicks, revenue
         FROM public.hourly_stats
         ORDER BY date, hour
@@ -49,7 +49,7 @@ def stats_hourly():
 
 @app.route('/stats/daily')
 def stats_daily():
-    return queryHelper('''
+    return query_helper('''
         SELECT date,
             SUM(impressions) AS impressions,
             SUM(clicks) AS clicks,
@@ -62,12 +62,12 @@ def stats_daily():
 
 @app.route('/poi')
 def poi():
-    return queryHelper('''
+    return query_helper('''
         SELECT *
         FROM public.poi;
     ''')
 
-def queryHelper(query):
+def query_helper(query):
     with engine.connect() as conn:
         result = conn.execute(query).fetchall()
         return jsonify([dict(row.items()) for row in result])
