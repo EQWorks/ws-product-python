@@ -8,7 +8,7 @@ import sqlalchemy
 app = Flask(__name__)
 
 # database engine
-engine = sqlalchemy.create_engine(os.getenv('SQL_URI'))
+engine = sqlalchemy.create_engine(os.getenv('SQL_URI', ''))
 
 
 @app.route('/')
@@ -60,12 +60,14 @@ def stats_daily():
         LIMIT 7;
     ''')
 
+
 @app.route('/poi')
 def poi():
     return query_helper('''
         SELECT *
         FROM public.poi;
     ''')
+
 
 def query_helper(query):
     with engine.connect() as conn:
