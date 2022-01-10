@@ -1,14 +1,21 @@
-# -*- coding: utf-8 -*-
-
 import os
+
 from flask import Flask, jsonify
-import sqlalchemy
+import sqlalchemy as sa
 
 # web app
 app = Flask(__name__)
 
 # database engine
-engine = sqlalchemy.create_engine(os.getenv('SQL_URI', ''))
+SQL_URI = sa.engine.URL.create(
+    drivername='postgresql',
+    username=os.getenv('PGUSER', ''),
+    password=os.getenv('PGPASSWORD', ''),
+    host=os.getenv('PGHOST', ''),
+    database=os.getenv('PGDATABASE', ''),
+    port=os.getenv('PGPORT', 5432),
+)
+engine = sa.create_engine(SQL_URI)
 
 
 @app.route('/')
